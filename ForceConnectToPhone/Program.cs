@@ -22,6 +22,12 @@ namespace ForceConnectToPhone
             BluetoothClient objClient = new BluetoothClient();
             objClient.Connect(objEndpoint);
             Stream peerStream = objClient.GetStream();
+            
+            System.IO.StreamWriter objWriter = new StreamWriter(peerStream);
+            objWriter.WriteLine("This is a test");
+            objWriter.Flush();
+
+            Console.ReadLine();
         }
     }
 }

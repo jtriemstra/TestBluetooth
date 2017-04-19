@@ -1,14 +1,15 @@
 package com.example.jtriemstra.forceconnectfromphone;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.bluetooth.*;
-
+import android.util.Log;
 import java.io.InputStreamReader;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     final int ACTIVITY_REQUEST_CODE_ENABLE_BT = 1;
     BluetoothAdapter m_objAdapter;
 
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (m_objAdapter == null) {
             // Device does not support Bluetooth
+            Log.d("MainActivity", "Bluetooth adapter is null");
         }
 
         if (!m_objAdapter.isEnabled()) {
@@ -56,16 +58,16 @@ public class MainActivity extends AppCompatActivity {
             if (objTransferSocket != null)
             {
                 InputStreamReader objStreamReader = new InputStreamReader(objTransferSocket.getInputStream());
-                int intCharactersRead = 0;
-                while ((intCharactersRead = objStreamReader.read()) != -1)
+                int intCharacterRead = 0;
+                while ((intCharacterRead = objStreamReader.read()) != -1)
                 {
-
+                    Log.d("MainActivity", "Character: " + intCharacterRead);
                 }
             }
         }
         catch (Exception ex)
         {
-
+            Log.d("MainActivity", "Error: " + ex.toString());
         }
 
 
