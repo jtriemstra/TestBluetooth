@@ -10,8 +10,12 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/try_to_connect"
-        android:onClick="tryToConnect"/>
+        android:text="@string/create_server"
+        android:onClick="createServer"/>
 
-
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/create_client"
+        android:onClick="createClient"/>
 </LinearLayout>

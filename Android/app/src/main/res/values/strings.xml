@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Force Connect From Phone</string>
-    <string name="try_to_connect">Try To Connect</string>
+    <string name="create_server">Create Server</string>
+    <string name="create_client">Create Client</string>
 </resources>

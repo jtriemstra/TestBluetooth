@@ -8,6 +8,7 @@ import android.view.View;
 import android.bluetooth.*;
 import android.util.Log;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 public class MainActivity extends Activity {
     final int ACTIVITY_REQUEST_CODE_ENABLE_BT = 1;
@@ -19,9 +20,9 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
     }
 
-    public void tryToConnect(View view) {
+    public void createServer(View view) {
 
-        m_objAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (m_objAdapter == null) m_objAdapter = BluetoothAdapter.getDefaultAdapter();
 
         if (m_objAdapter == null) {
             // Device does not support Bluetooth
@@ -37,7 +38,25 @@ public class MainActivity extends Activity {
         }
     }
 
-    @Override
+    public void createClient(View view) {
+        if (m_objAdapter == null) m_objAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        if (m_objAdapter == null) {
+            // Device does not support Bluetooth
+            Log.d("MainActivity", "Bluetooth adapter is null");
+        }
+
+        if (!m_objAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, ACTIVITY_REQUEST_CODE_ENABLE_BT);
+        }
+        else {
+            //doConnection();
+            doClient();
+        }
+    }
+
+        @Override
     protected void onActivityResult(int requestCode,
                                     int resultCode,
                                     Intent data)
@@ -69,8 +88,25 @@ public class MainActivity extends Activity {
         {
             Log.d("MainActivity", "Error: " + ex.toString());
         }
+    }
 
+    private void doClient()
+    {
+        try {
+            BluetoothDevice objServerDevice = m_objAdapter.getRemoteDevice("AC:7B:A1:AC:72:D0");
+            BluetoothSocket objTransferSocket = objServerDevice.createInsecureRfcommSocketToServiceRecord(java.util.UUID.fromString("00112233-4455-6677-8899-aabbccddeeee"));
 
-
+            if (objTransferSocket != null){
+                objTransferSocket.connect();
+                OutputStreamWriter objWriter = new OutputStreamWriter((objTransferSocket.getOutputStream()));
+                objWriter.write("This is a test");
+                objWriter.flush();
+                objWriter.close();
+            }
+        }
+        catch (Exception ex){
+            Log.d("MainActivity", "Error: " + ex.toString());
+            Log.e("MainActivity", "trace", ex);
+        }
     }
 }
